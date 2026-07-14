@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SpawnConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/spawn_config.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+tier_1_weight = 35
+tier_2_weight = 28
+tier_3_weight = 20
+tier_4_weight = 12
+tier_5_weight = 5

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="FruitDatabase" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/fruit_database.gd" id="1_script"]
+[ext_resource type="Resource" path="res://resources/fruits/fruit_01_cherry.tres" id="2_cherry"]
+[ext_resource type="Resource" path="res://resources/fruits/fruit_02_strawberry.tres" id="3_strawberry"]
+
+[resource]
+script = ExtResource("1_script")
+definitions = Array[FruitDefinition]([ExtResource("2_cherry"), ExtResource("3_strawberry")])
