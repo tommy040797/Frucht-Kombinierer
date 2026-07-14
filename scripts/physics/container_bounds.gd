@@ -3,7 +3,7 @@ extends Node2D
 
 const DEFAULT_CONFIG := preload("res://resources/physics_config.tres")
 
-@export var config: PhysicsConfig = DEFAULT_CONFIG
+@export var config: Resource = DEFAULT_CONFIG
 
 @onready var _floor_body: StaticBody2D = $FloorBody
 @onready var _wall_body: StaticBody2D = $WallBody
