@@ -1,10 +1,10 @@
 class_name GameOverState
 extends GameState
 
-var _machine: GameStateMachine
+var _machine: Node
 
 
-func _init(machine: GameStateMachine) -> void:
+func _init(machine: Node) -> void:
 	_machine = machine
 
 
