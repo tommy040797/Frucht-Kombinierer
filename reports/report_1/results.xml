@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites id="2026-07-14" name="report_1" tests="5" failures="0" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_dummy" package="tests/unit" timestamp="2026-07-14T13:31:44" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="0.007">
+		<testcase name="test_dummy_passes" classname="test_dummy" time="0.002">
+		</testcase>
+	</testsuite>
+	<testsuite id="1" name="test_resources" package="tests/unit" timestamp="2026-07-14T13:31:44" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.019">
+		<testcase name="test_fruit_database_preloads_tier_1" classname="test_resources" time="0.002">
+		</testcase>
+		<testcase name="test_spawn_config_weights" classname="test_resources" time="0.001">
+		</testcase>
+		<testcase name="test_score_config_merge_points" classname="test_resources" time="0.002">
+		</testcase>
+		<testcase name="test_physics_config_defaults" classname="test_resources" time="0.003">
+		</testcase>
+	</testsuite>
+</testsuites>
