@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqm5container01"]
+
+[ext_resource type="Script" path="res://scripts/physics/container_bounds.gd" id="1_bounds"]
+[ext_resource type="Script" path="res://scripts/physics/danger_line.gd" id="2_danger"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_danger"]
+size = Vector2(572, 4)
+
+[node name="Container" type="Node2D"]
+position = Vector2(54, 384)
+
+[node name="ContainerBounds" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1_bounds")
+
+[node name="LeftWall" type="CollisionPolygon2D" parent="ContainerBounds"]
+polygon = PackedVector2Array(0, 0, 20, 0, 20, 864, 10, 880, 0, 896)
+
+[node name="RightWall" type="CollisionPolygon2D" parent="ContainerBounds"]
+polygon = PackedVector2Array(612, 0, 592, 0, 592, 864, 602, 880, 612, 896)
+
+[node name="Floor" type="CollisionPolygon2D" parent="ContainerBounds"]
+polygon = PackedVector2Array(0, 876, 10, 880, 20, 876, 592, 876, 602, 880, 612, 876, 612, 896, 0, 896)
+
+[node name="ContainerVisual" type="Node2D" parent="."]
+
+[node name="LeftOutline" type="Line2D" parent="ContainerVisual"]
+points = PackedVector2Array(20, 0, 20, 876, 10, 880, 0, 896)
+width = 3.0
+default_color = Color(0.545, 0.353, 0.169, 1)
+
+[node name="RightOutline" type="Line2D" parent="ContainerVisual"]
+points = PackedVector2Array(592, 0, 592, 876, 602, 880, 612, 896)
+width = 3.0
+default_color = Color(0.545, 0.353, 0.169, 1)
+
+[node name="FloorOutline" type="Line2D" parent="ContainerVisual"]
+points = PackedVector2Array(0, 896, 10, 880, 20, 876, 592, 876, 602, 880, 612, 896)
+width = 3.0
+default_color = Color(0.545, 0.353, 0.169, 1)
+
+[node name="BackFill" type="ColorRect" parent="ContainerVisual"]
+offset_left = 20.0
+offset_top = 0.0
+offset_right = 592.0
+offset_bottom = 876.0
+color = Color(0.82, 0.71, 0.55, 0.35)
+
+[node name="DangerLine" type="Area2D" parent="."]
+position = Vector2(306, 761.6)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("2_danger")
+danger_y = 761.6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DangerLine"]
+shape = SubResource("RectangleShape2D_danger")
+
+[node name="DangerLineView" type="Line2D" parent="DangerLine"]
+points = PackedVector2Array(-286, 0, 286, 0)
+width = 2.0
+default_color = Color(1, 0.4, 0.1, 0.9)
