@@ -6,7 +6,7 @@
 | **Basis** | [PRD](./PRD.md) · [TDD](./TDD.md) · [SETUP](./SETUP.md) |
 | **Scope** | MVP (Godot 4, Android) |
 | **Größe** | Max. **1 Arbeitstag** (~6–8 h) pro Milestone |
-| **Stand** | 14. Juli 2026 — M01–M04 erledigt |
+| **Stand** | 14. Juli 2026 — M01–M04, M16 erledigt |
 
 ---
 
@@ -16,11 +16,11 @@
 |-------|------------|-------------|-------------|
 | 0 — Foundation | M01–M05 | 5 | M01–M04 ✅ |
 | 1 — Vertical Slice | M06–M12 | 7 | — |
-| 2 — Core Gameplay | M13–M18 | 6 | — |
+| 2 — Core Gameplay | M13–M18 | 6 | M16 ✅ |
 | 3 — Game Flow & UI | M19–M25 | 7 | — |
 | 4 — Meta & Polish | M26–M32 | 7 | — |
 | 5 — Ship MVP | M33–M36 | 4 | — |
-| **Gesamt** | **36 Milestones** | **~36 Tage** | **4/36** |
+| **Gesamt** | **36 Milestones** | **~36 Tage** | **5/36** |
 
 ```mermaid
 gantt
@@ -340,16 +340,27 @@ gantt
 
 ---
 
-### M16 — Game State Machine
+### M16 — Game State Machine ✅
 
 | | |
 |---|---|
+| **Status** | ✅ Abgeschlossen (14.07.2026) |
 | **Ziel** | States: Boot, Splash, MainMenu, Playing, Paused, GameOver mit validen Transitions |
 | **Abhängigkeiten** | M02 |
 | **Akzeptanzkriterien** | Ungültige Transitions blockiert; `game_state_changed`-Event; Playing/Paused toggelt Physik |
 | **Risiken** | State-Spaghetti → Transition-Tabelle als Konstante |
 | **Tests** | Unit: `Playing→Paused` ok; `Boot→GameOver` rejected |
 | **DoD** | `GameStateMachine` Autoload + 6 State-Klassen committed |
+
+**Checkliste**
+
+- [x] `scripts/core/game_state.gd` — Basisklasse mit State-Konstanten
+- [x] `scripts/core/game_state_transitions.gd` — Transition-Tabelle
+- [x] `scripts/core/game_state_machine.gd` — Autoload mit `transition_to()`, Physik-Flag
+- [x] `scripts/core/states/` — 6 State-Klassen (Boot, Splash, MainMenu, Playing, Paused, GameOver)
+- [x] `GameStateMachine` in `project.godot` als Autoload registriert
+- [x] `tests/unit/test_game_state_machine.gd` — gültige/ungültige Transitions, Physik-Toggle, Event
+- [x] Headless-Start ohne Errors (`--headless --quit-after 1`)
 
 ---
 
