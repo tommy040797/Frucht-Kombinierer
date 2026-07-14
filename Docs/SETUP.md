@@ -11,8 +11,8 @@ Checkliste vor dem ersten Code-Commit. Basis: [PRD](./PRD.md) + [TDD](./TDD.md) 
 | PRD | ✅ Approved (Godot 4) | Nein |
 | TDD / Architektur | ✅ Approved (Godot 4) | Nein |
 | Architekturentscheidungen (§24) | ✅ Verbindlich | Nein |
-| Godot-Projekt | ❌ Fehlt | **Ja** |
-| Godot 4.x installiert | ❓ Prüfen | **Ja** |
+| Godot-Projekt | ✅ M01 Scaffold | Nein |
+| Godot 4.x installiert | ✅ 4.7 (winget) | Nein |
 | Android Export Templates | ❓ Prüfen | **Ja** (für Device-Tests) |
 | GDD | ⏳ Optional | Nein (PRD reicht für Vertical Slice) |
 | Production Plan | ⏳ Optional | Nein |
@@ -127,6 +127,6 @@ Im Godot-Editor einmalig:
 
 ## Nächster Schritt
 
-**Godot 4 installieren** → dann legen wir das Projekt direkt im Repo an und starten mit dem Vertical Slice.
+**Godot 4.3+ installieren** → Projekt im Repo-Root importieren (siehe [README](../README.md)) → weiter mit **M03 Custom Resources & Config**.
 
 Godot-Projektdateien sind reine Textdateien (`.gd`, `.tscn`, `.tres`) — ideal für Git und Cursor.
