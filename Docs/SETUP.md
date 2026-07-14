@@ -78,8 +78,20 @@ Das Projekt nutzt **Godot 4.7** — dafür braucht es **GdUnit4 v6.2** (master),
 
 **Tests headless (CLI / CI):**
 
+GdUnit4 v6.2 blockiert `--headless` standardmäßig. Vor dem ersten Lauf einmal importieren, dann Tests mit `--ignoreHeadlessMode` starten:
+
 ```powershell
-Godot --headless --path . -s addons/gdUnit4/bin/GdUnitCmdTool.gd -a tests/unit
+# Einmalig: Projekt importieren (baut Class-Cache für GdUnit4)
+Godot --headless --path . --import
+
+# Unit-Tests ausführen
+Godot --headless --path . -s addons/gdUnit4/bin/GdUnitCmdTool.gd -a tests/unit --ignoreHeadlessMode
+```
+
+Alternativ ohne `--headless` (wie `addons/gdUnit4/runtest.cmd`):
+
+```powershell
+Godot --path . -s addons/gdUnit4/bin/GdUnitCmdTool.gd -a tests/unit
 ```
 
 Godot 4.7 finden (Windows):
