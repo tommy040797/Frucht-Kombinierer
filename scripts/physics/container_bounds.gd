@@ -1,13 +1,12 @@
 class_name ContainerBounds
-extends StaticBody2D
+extends Node2D
 
 const DEFAULT_CONFIG := preload("res://resources/physics_config.tres")
 
 @export var config: PhysicsConfig = DEFAULT_CONFIG
 
-@onready var _floor: CollisionPolygon2D = $Floor
-@onready var _left_wall: CollisionPolygon2D = $LeftWall
-@onready var _right_wall: CollisionPolygon2D = $RightWall
+@onready var _floor_body: StaticBody2D = $FloorBody
+@onready var _wall_body: StaticBody2D = $WallBody
 
 
 func _ready() -> void:
@@ -18,10 +17,9 @@ func _apply_materials() -> void:
 	var floor_material := PhysicsMaterial.new()
 	floor_material.bounce = config.bounce_floor
 	floor_material.friction = config.friction
-	_floor.physics_material_override = floor_material
+	_floor_body.physics_material_override = floor_material
 
 	var wall_material := PhysicsMaterial.new()
 	wall_material.bounce = 1.0
 	wall_material.friction = config.friction
-	_left_wall.physics_material_override = wall_material
-	_right_wall.physics_material_override = wall_material
+	_wall_body.physics_material_override = wall_material

@@ -9,18 +9,24 @@ size = Vector2(572, 4)
 [node name="Container" type="Node2D"]
 position = Vector2(54, 384)
 
-[node name="ContainerBounds" type="StaticBody2D" parent="."]
-collision_layer = 1
-collision_mask = 0
+[node name="ContainerBounds" type="Node2D" parent="."]
 script = ExtResource("1_bounds")
 
-[node name="LeftWall" type="CollisionPolygon2D" parent="ContainerBounds"]
+[node name="WallBody" type="StaticBody2D" parent="ContainerBounds"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="LeftWall" type="CollisionPolygon2D" parent="ContainerBounds/WallBody"]
 polygon = PackedVector2Array(0, 0, 20, 0, 20, 864, 10, 880, 0, 896)
 
-[node name="RightWall" type="CollisionPolygon2D" parent="ContainerBounds"]
+[node name="RightWall" type="CollisionPolygon2D" parent="ContainerBounds/WallBody"]
 polygon = PackedVector2Array(612, 0, 592, 0, 592, 864, 602, 880, 612, 896)
 
-[node name="Floor" type="CollisionPolygon2D" parent="ContainerBounds"]
+[node name="FloorBody" type="StaticBody2D" parent="ContainerBounds"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Floor" type="CollisionPolygon2D" parent="ContainerBounds/FloorBody"]
 polygon = PackedVector2Array(0, 876, 10, 880, 20, 876, 592, 876, 602, 880, 612, 876, 612, 896, 0, 896)
 
 [node name="ContainerVisual" type="Node2D" parent="."]
