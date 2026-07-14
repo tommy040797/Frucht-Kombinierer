@@ -1,10 +1,10 @@
 class_name FruitDatabase
 extends Resource
 
-@export var definitions: Array[FruitDefinition] = []
+@export var definitions: Array = []
 
 
-func get_by_tier(tier: int) -> FruitDefinition:
+func get_by_tier(tier: int):
 	for definition in definitions:
 		if definition.tier == tier:
 			return definition

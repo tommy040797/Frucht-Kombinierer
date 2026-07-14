@@ -6,4 +6,4 @@
 
 [resource]
 script = ExtResource("1_script")
-definitions = Array[FruitDefinition]([ExtResource("2_cherry"), ExtResource("3_strawberry")])
+definitions = [ExtResource("2_cherry"), ExtResource("3_strawberry")]
