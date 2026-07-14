@@ -17,6 +17,7 @@ Checkliste vor dem ersten Code-Commit. Basis: [PRD](./PRD.md) + [TDD](./TDD.md) 
 | GDD | ⏳ Optional | Nein (PRD reicht für Vertical Slice) |
 | Production Plan | ⏳ Optional | Nein |
 | Game-Art Assets | ⏳ Placeholder ok | Nein |
+| GdUnit4 (Tests) | ✅ M04 installiert | Nein |
 
 ---
 
@@ -36,7 +37,7 @@ Checkliste vor dem ersten Code-Commit. Basis: [PRD](./PRD.md) + [TDD](./TDD.md) 
 | Save | JSON in `user://` |
 | Events | Signals + EventBus-Autoload |
 | Lokalisierung | TranslationServer + CSV |
-| Tests | GdUnit4 (oder GUT) |
+| Tests | GdUnit4 |
 
 ---
 
@@ -62,6 +63,35 @@ Im Godot-Editor einmalig:
 - **Godot Editor** — Scenes, Inspector, Debugger
 - **Cursor / VS Code** — GDScript mit [godot-tools](https://marketplace.visualstudio.com/items?itemName=geequlim.godot-tools) Extension
 - Beides parallel: Editor für visuelles Setup, Cursor für Code
+
+### 4. GdUnit4 (Unit Tests)
+
+Das Projekt nutzt **Godot 4.7** — dafür braucht es **GdUnit4 v6.2** (master), nicht v6.1.x (nur bis Godot 4.6).
+
+**Installation:** Das Addon liegt bereits unter `addons/gdUnit4/` (committed). Nach einem frischen Clone einmal den Godot-Editor öffnen, damit der Plugin-Cache neu aufgebaut wird. Das Plugin ist in `project.godot` unter `[editor_plugins]` aktiviert.
+
+**Tests im Editor ausführen:**
+
+1. Godot-Editor öffnen → Projekt importieren
+2. Unten den **GdUnit**-Tab öffnen
+3. `tests/unit/test_dummy.gd` auswählen → **Run**
+
+**Tests headless (CLI / CI):**
+
+```powershell
+Godot --headless --path . -s addons/gdUnit4/bin/GdUnitCmdTool.gd -a tests/unit
+```
+
+Godot 4.7 finden (Windows):
+
+```powershell
+winget install GodotEngine.GodotEngine   # falls noch nicht installiert
+where.exe godot                          # wenn im PATH
+```
+
+Falls `where godot` nichts liefert: Godot-Executable aus dem WinGet-Paketordner oder von [godotengine.org/download](https://godotengine.org/download) verwenden.
+
+Neue Tests gehören nach `tests/unit/` und erweitern `GdUnitTestSuite`. Testdateien mit `# GdUnit4Suite` markieren.
 
 ---
 
@@ -95,6 +125,7 @@ Im Godot-Editor einmalig:
 - [x] TDD für Godot 4 neu geschrieben
 - [x] `.gitignore` für Godot
 - [x] Repo-Dokumentation (`docs/`)
+- [x] GdUnit4 Test-Framework (`addons/gdUnit4/`, `tests/unit/`)
 
 ---
 
@@ -127,6 +158,6 @@ Im Godot-Editor einmalig:
 
 ## Nächster Schritt
 
-**Godot 4.3+ installieren** → Projekt im Repo-Root importieren (siehe [README](../README.md)) → weiter mit **M03 Custom Resources & Config**.
+**Godot 4.7 installieren** → Projekt im Repo-Root importieren (siehe [README](../README.md)) → GdUnit-Tests mit `GdUnitCmdTool` verifizieren → weiter mit **M05 Container & Physik** (nach M03-Merge).
 
 Godot-Projektdateien sind reine Textdateien (`.gd`, `.tscn`, `.tres`) — ideal für Git und Cursor.
