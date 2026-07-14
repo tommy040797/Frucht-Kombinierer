@@ -6,7 +6,7 @@
 | **Basis** | [PRD](./PRD.md) · [TDD](./TDD.md) · [SETUP](./SETUP.md) |
 | **Scope** | MVP (Godot 4, Android) |
 | **Größe** | Max. **1 Arbeitstag** (~6–8 h) pro Milestone |
-| **Stand** | 14. Juli 2026 — M01–M02 erledigt |
+| **Stand** | 14. Juli 2026 — M01–M04 erledigt |
 
 ---
 
@@ -14,13 +14,13 @@
 
 | Phase | Milestones | Arbeitstage | Fortschritt |
 |-------|------------|-------------|-------------|
-| 0 — Foundation | M01–M05 | 5 | M01–M02 ✅ |
+| 0 — Foundation | M01–M05 | 5 | M01–M04 ✅ |
 | 1 — Vertical Slice | M06–M12 | 7 | — |
 | 2 — Core Gameplay | M13–M18 | 6 | — |
 | 3 — Game Flow & UI | M19–M25 | 7 | — |
 | 4 — Meta & Polish | M26–M32 | 7 | — |
 | 5 — Ship MVP | M33–M36 | 4 | — |
-| **Gesamt** | **36 Milestones** | **~36 Tage** | **2/36** |
+| **Gesamt** | **36 Milestones** | **~36 Tage** | **4/36** |
 
 ```mermaid
 gantt
@@ -145,10 +145,11 @@ gantt
 
 ---
 
-### M03 — Custom Resources & Config
+### M03 — Custom Resources & Config ✅
 
 | | |
 |---|---|
+| **Status** | ✅ Abgeschlossen (14.07.2026) |
 | **Ziel** | `FruitDefinition`, `FruitDatabase`, `SpawnConfig`, `ScoreConfig`, `PhysicsConfig` als `.tres` |
 | **Abhängigkeiten** | M01 |
 | **Akzeptanzkriterien** | Mind. Tier 1–2 als Resources; Spawn-Gewichte 35/28/20/12/5 %; Score-Tabelle PRD §8.1; Werte im Inspector editierbar |
@@ -156,18 +157,39 @@ gantt
 | **Tests** | Resources laden per `preload()` ohne Fehler |
 | **DoD** | `resources/` mit Configs committed; PRD-Werte dokumentiert |
 
+**Checkliste**
+
+- [x] `scripts/resources/` — 5 Resource-Klassen mit `class_name`
+- [x] `resources/fruits/fruit_01_cherry.tres` — Tier 1 (radius 18, mass 1.0)
+- [x] `resources/fruits/fruit_02_strawberry.tres` — Tier 2 (radius 26, mass 1.4)
+- [x] `resources/fruit_database.tres`, `spawn_config.tres`, `score_config.tres`, `physics_config.tres`
+- [x] Spawn-Gewichte 35 / 28 / 20 / 12 / 5 (PRD §5.5)
+- [x] Score-Tabelle vollständig (PRD §8.1)
+- [x] `scenes/boot/boot.gd` — Resource-Preload-Smoke-Assertions
+- [x] Headless-Start ohne Errors (`--headless --quit-after 1`)
+- [x] SETUP.md — M03 Resource-Dokumentation
+
 ---
 
-### M04 — Test-Framework-Setup
+### M04 — Test-Framework-Setup ✅
 
 | | |
 |---|---|
+| **Status** | ✅ Abgeschlossen (14.07.2026) |
 | **Ziel** | GdUnit4 installieren; erstes EditMode-Test-Skeleton |
 | **Abhängigkeiten** | M01 |
 | **Akzeptanzkriterien** | `tests/unit/` vorhanden; ein Dummy-Test läuft grün im Godot-Test-Runner |
 | **Risiken** | Addon-Version inkompatibel → GdUnit4-Release zu Godot-Version matchen |
 | **Tests** | `test_dummy.gd` → `assert_that(true).is_true()` |
 | **DoD** | GdUnit4 als Addon committed oder dokumentiert; Test läuft |
+
+**Checkliste**
+
+- [x] `addons/gdUnit4/` — GdUnit4 v6.2 (master) für Godot 4.7 committed
+- [x] `project.godot` — Plugin unter `[editor_plugins]` aktiviert
+- [x] `tests/unit/test_dummy.gd` — Dummy-Test läuft grün
+- [x] Headless-Test via `GdUnitCmdTool.gd -a tests/unit` → Exit 0
+- [x] SETUP.md — GdUnit4 Install- und Run-Anleitung
 
 ---
 
