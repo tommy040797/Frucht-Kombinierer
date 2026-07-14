@@ -1,0 +1,36 @@
+# GdUnit4Suite
+extends GdUnitTestSuite
+
+const FRUIT_POOL_SCRIPT := preload("res://scripts/physics/fruit_pool.gd")
+
+var _pool: Node
+
+
+func before_test() -> void:
+	_pool = FRUIT_POOL_SCRIPT.new()
+	add_child(_pool)
+	auto_free(_pool)
+
+
+func test_acquire_tier_one_fruit() -> void:
+	var body := _pool.acquire(1) as RigidBody2D
+	assert_that(body).is_not_null()
+	assert_that(body.get("tier")).is_equal(1)
+	assert_that(body.contact_monitor).is_true()
+	assert_that(body.continuous_cd).is_equal(RigidBody2D.CCD_MODE_CAST_SHAPE)
+	_pool.release(body)
+
+
+func test_pool_acquire_release_stable() -> void:
+	for _cycle in 2:
+		for _i in 5:
+			var body := _pool.acquire(1) as RigidBody2D
+			assert_that(body).is_not_null()
+			_pool.release(body)
+	assert_that(_pool.get_total_count()).is_equal(1)
+
+
+func test_release_does_not_free() -> void:
+	var body := _pool.acquire(1) as RigidBody2D
+	_pool.release(body)
+	assert_that(is_instance_valid(body)).is_true()

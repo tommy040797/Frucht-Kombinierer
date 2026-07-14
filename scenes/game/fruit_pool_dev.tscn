@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqm6fruitpooldev01"]
+
+[ext_resource type="PackedScene" uid="uid://bqm5container01" path="res://scenes/game/container.tscn" id="1_container"]
+[ext_resource type="Script" path="res://scripts/physics/fruit_pool.gd" id="2_pool"]
+[ext_resource type="Script" path="res://scripts/physics/fruit_pool_dev.gd" id="3_dev"]
+
+[node name="FruitPoolDev" type="Node2D"]
+script = ExtResource("3_dev")
+
+[node name="Container" parent="." instance=ExtResource("1_container")]
+
+[node name="FruitPool" type="Node" parent="."]
+script = ExtResource("2_pool")
