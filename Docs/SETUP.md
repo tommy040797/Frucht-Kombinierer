@@ -130,3 +130,85 @@ Im Godot-Editor einmalig:
 **Godot 4.3+ installieren** → Projekt im Repo-Root importieren (siehe [README](../README.md)) → weiter mit **M03 Custom Resources & Config**.
 
 Godot-Projektdateien sind reine Textdateien (`.gd`, `.tscn`, `.tres`) — ideal für Git und Cursor.
+
+---
+
+## M03 — Custom Resources & Config
+
+Editierbare Spielkonfiguration als Godot Custom Resources (`.tres`). Werte sind im Inspector anpassbar; Runtime lädt per `preload()` oder `load()`.
+
+### Resource-Skripte (`scripts/resources/`)
+
+| Klasse | Datei | Zweck |
+|--------|-------|-------|
+| `FruitDefinition` | `fruit_definition.gd` | Tier, Name, Radius, Masse, Reibung, Sprite, SFX/Juice-Stubs |
+| `FruitDatabase` | `fruit_database.gd` | Array aller Definitionen; `get_by_tier()`, `get_max_tier()` |
+| `SpawnConfig` | `spawn_config.gd` | Spawn-Gewichte Tier 1–5; `get_weight()`, `get_total_weight()` |
+| `ScoreConfig` | `score_config.gd` | Punkte pro Merge (PRD §8.1); `get_score_for_merge(source_tier)` |
+| `PhysicsConfig` | `physics_config.gd` | Schwerkraft, Reibung, Boden-Bounce, Body-Limit, Sleep (PRD §10.2) |
+
+### `.tres`-Dateien (`resources/`)
+
+| Pfad | Inhalt |
+|------|--------|
+| `resources/fruits/fruit_01_cherry.tres` | Tier 1 — Kirsche (radius 18, mass 1.0) |
+| `resources/fruits/fruit_02_strawberry.tres` | Tier 2 — Erdbeere (radius 26, mass 1.4) |
+| `resources/fruit_database.tres` | Verweist auf Tier 1–2 Definitionen |
+| `resources/spawn_config.tres` | Gewichte: 35 / 28 / 20 / 12 / 5 (PRD §5.5) |
+| `resources/score_config.tres` | Merge-Punkte: 10, 25, 50, 100, 200, 400, 800, 1600, 3200, 7500 |
+| `resources/physics_config.tres` | gravity 980, friction 0.4, bounce_floor 0.3, max_bodies 40 |
+
+### Spawn-Gewichte (PRD §5.5)
+
+| Tier | Gewicht |
+|------|---------|
+| 1 | 35 |
+| 2 | 28 |
+| 3 | 20 |
+| 4 | 12 |
+| 5 | 5 |
+
+`get_total_weight()` = 100.
+
+### Score-Tabelle (PRD §8.1)
+
+| Merge | Punkte |
+|-------|--------|
+| 1→2 | 10 |
+| 2→3 | 25 |
+| 3→4 | 50 |
+| 4→5 | 100 |
+| 5→6 | 200 |
+| 6→7 | 400 |
+| 7→8 | 800 |
+| 8→9 | 1600 |
+| 9→10 | 3200 |
+| 10→11 | 7500 |
+
+`get_score_for_merge(source_tier)` liefert die Punkte für `source_tier → source_tier + 1`.
+
+### Physics-Defaults (PRD §10.2)
+
+| Feld | Wert |
+|------|------|
+| `gravity` | 980 |
+| `friction` | 0.4 |
+| `bounce_floor` | 0.3 |
+| `max_bodies` | 40 |
+| `sleep_threshold` | 0.1 |
+| `physics_ticks_per_second` | 60 (Referenz; Anwendung ab M05) |
+
+### Smoke-Test (Boot)
+
+`scenes/boot/boot.gd` preloaded und assertiert:
+
+- `FruitDatabase.get_by_tier(1).tier == 1`
+- `SpawnConfig.get_weight(1) == 35`
+- `ScoreConfig.get_score_for_merge(1) == 10`
+- `PhysicsConfig.bounce_floor == 0.3`
+
+Headless-Verifikation:
+
+```powershell
+Godot --headless --path . --quit-after 1
+```
