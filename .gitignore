@@ -1,0 +1,39 @@
+# Godot 4
+.godot/
+.import/
+export.cfg
+export_presets.cfg
+
+# Android export
+android/build/
+*.apk
+*.aab
+*.idsig
+
+# Godot-specific
+*.translation
+
+# Mono / C# (falls später genutzt)
+.mono/
+data_*/
+mono_crash.*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Secrets
+.env
+*.keystore
+!debug.keystore
+
+# Logs
+*.log
