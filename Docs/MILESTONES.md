@@ -6,7 +6,7 @@
 | **Basis** | [PRD](./PRD.md) · [TDD](./TDD.md) · [SETUP](./SETUP.md) |
 | **Scope** | MVP (Godot 4, Android) |
 | **Größe** | Max. **1 Arbeitstag** (~6–8 h) pro Milestone |
-| **Stand** | 14. Juli 2026 — M01–M05, M16 erledigt |
+| **Stand** | 14. Juli 2026 — M01–M06, M16 erledigt |
 
 ---
 
@@ -15,12 +15,12 @@
 | Phase | Milestones | Arbeitstage | Fortschritt |
 |-------|------------|-------------|-------------|
 | 0 — Foundation | M01–M05 | 5 | M01–M05 ✅ |
-| 1 — Vertical Slice | M06–M12 | 7 | — |
+| 1 — Vertical Slice | M06–M12 | 7 | M06 ✅ |
 | 2 — Core Gameplay | M13–M18 | 6 | M16 ✅ |
 | 3 — Game Flow & UI | M19–M25 | 7 | — |
 | 4 — Meta & Polish | M26–M32 | 7 | — |
 | 5 — Ship MVP | M33–M36 | 4 | — |
-| **Gesamt** | **36 Milestones** | **~36 Tage** | **6/36** |
+| **Gesamt** | **36 Milestones** | **~36 Tage** | **7/36** |
 
 ```mermaid
 gantt
@@ -219,16 +219,26 @@ gantt
 
 ## Phase 1 — Vertical Slice
 
-### M06 — FruitBody & Object Pool
+### M06 — FruitBody & Object Pool ✅
 
 | | |
 |---|---|
+| **Status** | ✅ Abgeschlossen (14.07.2026) |
 | **Ziel** | `FruitBody` (RigidBody2D) mit Tier-Daten, `FruitPool` acquire/release |
 | **Abhängigkeiten** | M03, M05 |
 | **Akzeptanzkriterien** | Pool liefert Tier-1-Frucht; `contact_monitor` aktiv; `continuous_cd` gesetzt; Release gibt Body zurück |
 | **Risiken** | Pool-Leak bei Destroy → immer `release()` statt `queue_free()` |
 | **Tests** | Unit: Pool acquire 5×, release 5×, Size stabil |
 | **DoD** | `fruit_body.tscn` + `fruit_pool.gd` committed |
+
+**Checkliste**
+
+- [x] `scripts/physics/fruit_body.gd` — `FruitBody` mit Tier-Konfiguration, Pool-Reset, Tier-Flags
+- [x] `scenes/fruits/fruit_body.tscn` — `RigidBody2D`, Layer 2/Mask 3, `contact_monitor`, `continuous_cd`
+- [x] `scripts/physics/fruit_pool.gd` — `FruitPool` acquire/release, max 40 Bodies, kein `queue_free()`
+- [x] `scenes/game/fruit_pool_dev.tscn` — Dev-Szene mit Container + Pool (Space = Tier 1)
+- [x] `tests/unit/test_fruit_pool.gd` — Tier-1 acquire, 5× acquire/release stabil, Release ohne free
+- [x] GdUnit Headless-Tests (`test_fruit_pool.gd`) → Exit 0
 
 ---
 
