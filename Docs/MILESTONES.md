@@ -6,7 +6,7 @@
 | **Basis** | [PRD](./PRD.md) · [TDD](./TDD.md) · [SETUP](./SETUP.md) |
 | **Scope** | MVP (Godot 4, Android) |
 | **Größe** | Max. **1 Arbeitstag** (~6–8 h) pro Milestone |
-| **Stand** | 14. Juli 2026 — M01–M04 erledigt |
+| **Stand** | 14. Juli 2026 — M01–M05 erledigt |
 
 ---
 
@@ -14,13 +14,13 @@
 
 | Phase | Milestones | Arbeitstage | Fortschritt |
 |-------|------------|-------------|-------------|
-| 0 — Foundation | M01–M05 | 5 | M01–M04 ✅ |
+| 0 — Foundation | M01–M05 | 5 | M01–M05 ✅ |
 | 1 — Vertical Slice | M06–M12 | 7 | — |
 | 2 — Core Gameplay | M13–M18 | 6 | — |
 | 3 — Game Flow & UI | M19–M25 | 7 | — |
 | 4 — Meta & Polish | M26–M32 | 7 | — |
 | 5 — Ship MVP | M33–M36 | 4 | — |
-| **Gesamt** | **36 Milestones** | **~36 Tage** | **4/36** |
+| **Gesamt** | **36 Milestones** | **~36 Tage** | **5/36** |
 
 ```mermaid
 gantt
@@ -193,16 +193,27 @@ gantt
 
 ---
 
-### M05 — Container-Szene & Physik-Grenzen
+### M05 — Container-Szene & Physik-Grenzen ✅
 
 | | |
 |---|---|
+| **Status** | ✅ Abgeschlossen (14.07.2026) |
 | **Ziel** | Obstkorb mit `StaticBody2D`-Wänden, Boden, abgerundete Kollision; Danger-Line als `Area2D` |
 | **Abhängigkeiten** | M01, M03 |
 | **Akzeptanzkriterien** | Container sichtbar (Placeholder-Grafik ok); Boden bounce ~0,3; Wände reflektierend; Danger-Line bei ~85 % Höhe |
 | **Risiken** | Kollisionsformen zu glitchy → `CollisionPolygon2D` feinjustieren |
 | **Tests** | Test-`RigidBody2D` fällt in Container, prallt an Wänden |
 | **DoD** | `scenes/game/container.tscn` committed; PhysicsConfig angewendet |
+
+**Checkliste**
+
+- [x] `scripts/physics/container_bounds.gd` — PhysicsConfig auf Boden/Wände angewendet
+- [x] `scripts/physics/danger_line.gd` — Danger-Line Area2D-Stub
+- [x] `scenes/game/container.tscn` — Wände, Boden, Danger-Line, Placeholder-Grafik
+- [x] `scenes/game/container_dev.tscn` — Dev-Szene mit Test-RigidBody2D
+- [x] `project.godot` — `common/physics_ticks_per_second=60`
+- [x] `tests/unit/test_container.gd` — Szene lädt, Danger-Line bei ~85 %
+- [x] Headless-Start ohne Errors (`--headless --quit-after 1`)
 
 ---
 
