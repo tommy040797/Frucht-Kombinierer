@@ -1,5 +1,12 @@
 extends Node
 
+const BootStateScript = preload("res://scripts/core/states/boot_state.gd")
+const SplashStateScript = preload("res://scripts/core/states/splash_state.gd")
+const MainMenuStateScript = preload("res://scripts/core/states/main_menu_state.gd")
+const PlayingStateScript = preload("res://scripts/core/states/playing_state.gd")
+const PausedStateScript = preload("res://scripts/core/states/paused_state.gd")
+const GameOverStateScript = preload("res://scripts/core/states/game_over_state.gd")
+
 var current_state_name: StringName = &""
 var physics_active: bool = false
 
@@ -50,7 +57,12 @@ func register_physics_handler(callable: Callable) -> void:
 
 
 func _register_states() -> void:
-	pass
+	_states[GameState.BOOT] = BootStateScript.new(self)
+	_states[GameState.SPLASH] = SplashStateScript.new(self)
+	_states[GameState.MAIN_MENU] = MainMenuStateScript.new(self)
+	_states[GameState.PLAYING] = PlayingStateScript.new(self)
+	_states[GameState.PAUSED] = PausedStateScript.new(self)
+	_states[GameState.GAME_OVER] = GameOverStateScript.new(self)
 
 
 func _enter_state(state_name: StringName) -> void:
