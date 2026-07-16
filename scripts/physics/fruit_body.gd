@@ -5,6 +5,7 @@ const DEFAULT_DATABASE := preload("res://resources/fruit_database.tres")
 const ACTIVE_COLLISION_LAYER := 2
 const ACTIVE_COLLISION_MASK := 3
 const POOL_PARK_POSITION := Vector2(-10000, -10000)
+const VISUAL_SEGMENTS := 16
 
 const TIER_COLORS := {
 	1: Color(0.9, 0.2, 0.2, 1.0),
@@ -28,7 +29,7 @@ var is_in_danger_zone: bool = false
 var is_merging: bool = false
 
 @onready var _collision_shape: CollisionShape2D = $CollisionShape2D
-@onready var _visual: ColorRect = $FruitVisual
+@onready var _visual: Polygon2D = $FruitVisual
 
 
 func configure_from_tier(p_tier: int, p_database: Resource = database) -> void:
@@ -41,7 +42,6 @@ func configure_from_tier(p_tier: int, p_database: Resource = database) -> void:
 	mass = definition.mass
 	_apply_physics_material(definition.friction)
 	_apply_radius(definition.radius, p_tier)
-	# Stay inactive until activate_at() places the body.
 
 
 func activate_at(world_position: Vector2) -> void:
@@ -65,12 +65,10 @@ func reset_for_pool() -> void:
 
 
 func _set_transform_direct(world_position: Vector2) -> void:
-	# RigidBody2D can ignore global_position writes while simulated; force physics state.
 	var xform := Transform2D(0.0, world_position)
 	if is_inside_tree():
 		PhysicsServer2D.body_set_state(get_rid(), PhysicsServer2D.BODY_STATE_TRANSFORM, xform)
 	global_position = world_position
-
 
 
 func _set_pooled(pooled: bool) -> void:
@@ -82,22 +80,31 @@ func _set_pooled(pooled: bool) -> void:
 	else:
 		collision_layer = ACTIVE_COLLISION_LAYER
 		collision_mask = ACTIVE_COLLISION_MASK
-	var shape := _collision_shape
-	if shape == null and has_node("CollisionShape2D"):
-		shape = $CollisionShape2D
+
+	var shape := _get_collision_shape()
 	if shape != null:
 		shape.disabled = pooled
+		shape.visible = not pooled
+
+	var visual := _get_visual()
+	if visual != null:
+		visual.visible = not pooled
+
+
+func _get_collision_shape() -> CollisionShape2D:
+	if _collision_shape == null and has_node("CollisionShape2D"):
+		_collision_shape = $CollisionShape2D
+	return _collision_shape
+
+
+func _get_visual() -> Polygon2D:
 	if _visual == null and has_node("FruitVisual"):
 		_visual = $FruitVisual
-	if _visual != null:
-		_visual.visible = not pooled
+	return _visual
 
 
 func _apply_radius(radius: float, p_tier: int) -> void:
-	var shape := _collision_shape
-	if shape == null and has_node("CollisionShape2D"):
-		shape = $CollisionShape2D
-		_collision_shape = shape
+	var shape := _get_collision_shape()
 	var circle := CircleShape2D.new()
 	circle.radius = radius
 	shape.shape = circle
@@ -105,15 +112,17 @@ func _apply_radius(radius: float, p_tier: int) -> void:
 
 
 func _apply_visual(radius: float, p_tier: int) -> void:
-	var visual := _visual
-	if visual == null and has_node("FruitVisual"):
-		visual = $FruitVisual
-		_visual = visual
+	var visual := _get_visual()
 	visual.color = TIER_COLORS.get(p_tier, Color(0.7, 0.7, 0.7, 1.0))
-	visual.offset_left = -radius
-	visual.offset_top = -radius
-	visual.offset_right = radius
-	visual.offset_bottom = radius
+	visual.polygon = _circle_polygon(radius)
+
+
+func _circle_polygon(radius: float) -> PackedVector2Array:
+	var points := PackedVector2Array()
+	for i in VISUAL_SEGMENTS:
+		var angle := float(i) * TAU / float(VISUAL_SEGMENTS)
+		points.append(Vector2(cos(angle), sin(angle)) * radius)
+	return points
 
 
 func _apply_physics_material(friction: float) -> void:

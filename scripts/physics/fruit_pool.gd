@@ -11,18 +11,15 @@ var _available: Array = []
 var _all_bodies: Array = []
 
 
-func acquire(tier: int, at_position: Vector2 = Vector2.ZERO) -> RigidBody2D:
-	var body: RigidBody2D
-	if not _available.is_empty():
-		body = _available.pop_back() as RigidBody2D
-	else:
+func acquire(tier: int, at_position: Vector2 = Vector2.ZERO, exclude: Array = []) -> RigidBody2D:
+	var body := _take_available(exclude)
+	if body == null:
 		if _all_bodies.size() >= PHYSICS_CONFIG.max_bodies:
 			push_error("FruitPool: max bodies reached (%d)" % PHYSICS_CONFIG.max_bodies)
 			return null
 		body = FRUIT_BODY_SCENE.instantiate() as RigidBody2D
 		_all_bodies.append(body)
 		add_child(body)
-		# Ensure pooled defaults before first activation.
 		body.reset_for_pool()
 
 	if body.get_parent() != self:
@@ -35,7 +32,6 @@ func acquire(tier: int, at_position: Vector2 = Vector2.ZERO) -> RigidBody2D:
 		release(body)
 		return null
 
-	# Place first, then enable physics — prevents one-frame husks at old merge spots.
 	body.activate_at(at_position)
 	return body
 
@@ -54,6 +50,16 @@ func release(body: RigidBody2D) -> void:
 		add_child(body)
 	if not _available.has(body):
 		_available.append(body)
+
+
+func _take_available(exclude: Array) -> RigidBody2D:
+	for i in range(_available.size() - 1, -1, -1):
+		var candidate: RigidBody2D = _available[i] as RigidBody2D
+		if exclude.has(candidate):
+			continue
+		_available.remove_at(i)
+		return candidate
+	return null
 
 
 func get_active_count() -> int:

@@ -57,6 +57,10 @@ func test_try_merge_produces_tier_two() -> void:
 	assert_that(body).is_not_null()
 	assert_that(body.get("tier")).is_equal(2)
 	assert_that(_pool.get_active_count()).is_equal(active_before - 1)
+	assert_that(body).is_not_same(a)
+	assert_that(body).is_not_same(b)
+	assert_that(a.visible).is_false()
+	assert_that(b.visible).is_false()
 
 	_pool.release(body)
 
@@ -134,11 +138,18 @@ func test_pool_balance_after_merge() -> void:
 
 	var result: Dictionary = _merge.try_merge(a, b)
 	assert_that(result.get("success")).is_true()
-	# Two released, one reused as result → 1 active, 1 available, total 2.
-	assert_that(_pool.get_active_count()).is_equal(1)
-	assert_that(_pool.get_available_count()).is_equal(1)
-	assert_that(_pool.get_total_count()).is_equal(2)
 	var body: RigidBody2D = result.get("result") as RigidBody2D
+	# Partners stay pooled; result is a fresh body (not a or b).
+	assert_that(body).is_not_same(a)
+	assert_that(body).is_not_same(b)
+	assert_that(a.visible).is_false()
+	assert_that(b.visible).is_false()
+	assert_that(a.freeze).is_true()
+	assert_that(b.freeze).is_true()
+	assert_that(_pool.get_active_count()).is_equal(1)
+	assert_that(_pool.get_available_count()).is_equal(2)
+	assert_that(_pool.get_total_count()).is_equal(3)
+
 	_pool.release(body)
 	assert_that(_pool.get_active_count()).is_equal(0)
-	assert_that(_pool.get_available_count()).is_equal(2)
+	assert_that(_pool.get_available_count()).is_equal(3)

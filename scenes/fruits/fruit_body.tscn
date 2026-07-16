@@ -18,12 +18,9 @@ script = ExtResource("1_fruit_body")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_default")
 
-[node name="FruitVisual" type="ColorRect" parent="."]
-offset_left = -18.0
-offset_top = -18.0
-offset_right = 18.0
-offset_bottom = 18.0
+[node name="FruitVisual" type="Polygon2D" parent="."]
 color = Color(0.9, 0.2, 0.2, 1)
+polygon = PackedVector2Array(18, 0, 16.618, 6.894, 12.728, 12.728, 6.894, 16.618, 0, 18, -6.894, 16.618, -12.728, 12.728, -16.618, 6.894, -18, 0, -16.618, -6.894, -12.728, -12.728, -6.894, -16.618, 0, -18, 6.894, -16.618, 12.728, -12.728, 16.618, -6.894)
 
 [node name="FruitCollisionHandler" type="Node" parent="."]
 script = ExtResource("2_collision_handler")

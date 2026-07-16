@@ -91,10 +91,12 @@ func _execute_merge(a: RigidBody2D, b: RigidBody2D) -> void:
 		"contact_point": contact_point,
 	})
 
+	# Despawn both components completely before the result appears.
 	pool.release(a)
 	pool.release(b)
 
-	var result: RigidBody2D = pool.acquire(result_tier, contact_point) as RigidBody2D
+	# Never reuse the just-despawned partners for this result — avoids husks under the new fruit.
+	var result: RigidBody2D = pool.acquire(result_tier, contact_point, [a, b]) as RigidBody2D
 	if result == null or int(result.get("tier")) != result_tier:
 		push_error("MergeService: failed to acquire result tier %d" % result_tier)
 		if result != null:
@@ -102,6 +104,7 @@ func _execute_merge(a: RigidBody2D, b: RigidBody2D) -> void:
 		_last_result = {"success": false, "result": null, "result_tier": 0}
 		return
 
+	assert(result != a and result != b)
 	result.apply_central_impulse(RESULT_UPWARD_IMPULSE)
 
 	var awarded := 0
