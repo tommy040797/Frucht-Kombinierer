@@ -11,7 +11,7 @@ var _available: Array = []
 var _all_bodies: Array = []
 
 
-func acquire(tier: int) -> RigidBody2D:
+func acquire(tier: int, at_position: Vector2 = Vector2.ZERO) -> RigidBody2D:
 	var body: RigidBody2D
 	if not _available.is_empty():
 		body = _available.pop_back() as RigidBody2D
@@ -22,6 +22,8 @@ func acquire(tier: int) -> RigidBody2D:
 		body = FRUIT_BODY_SCENE.instantiate() as RigidBody2D
 		_all_bodies.append(body)
 		add_child(body)
+		# Ensure pooled defaults before first activation.
+		body.reset_for_pool()
 
 	if body.get_parent() != self:
 		if body.get_parent():
@@ -29,6 +31,12 @@ func acquire(tier: int) -> RigidBody2D:
 		add_child(body)
 
 	body.configure_from_tier(tier, database)
+	if int(body.get("tier")) != tier:
+		release(body)
+		return null
+
+	# Place first, then enable physics — prevents one-frame husks at old merge spots.
+	body.activate_at(at_position)
 	return body
 
 

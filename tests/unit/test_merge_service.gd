@@ -29,26 +29,24 @@ func before_test() -> void:
 
 
 func test_can_merge_same_tier() -> void:
-	var a := _pool.acquire(1) as RigidBody2D
-	var b := _pool.acquire(1) as RigidBody2D
+	var a := _pool.acquire(1, Vector2(10, 10)) as RigidBody2D
+	var b := _pool.acquire(1, Vector2(20, 10)) as RigidBody2D
 	assert_that(_merge.can_merge(a, b)).is_true()
 	_pool.release(a)
 	_pool.release(b)
 
 
 func test_can_merge_different_tier_false() -> void:
-	var a := _pool.acquire(1) as RigidBody2D
-	var b := _pool.acquire(2) as RigidBody2D
+	var a := _pool.acquire(1, Vector2(10, 10)) as RigidBody2D
+	var b := _pool.acquire(2, Vector2(20, 10)) as RigidBody2D
 	assert_that(_merge.can_merge(a, b)).is_false()
 	_pool.release(a)
 	_pool.release(b)
 
 
 func test_try_merge_produces_tier_two() -> void:
-	var a := _pool.acquire(1) as RigidBody2D
-	var b := _pool.acquire(1) as RigidBody2D
-	a.global_position = Vector2(100, 100)
-	b.global_position = Vector2(120, 100)
+	var a := _pool.acquire(1, Vector2(100, 100)) as RigidBody2D
+	var b := _pool.acquire(1, Vector2(120, 100)) as RigidBody2D
 
 	var active_before: int = _pool.get_active_count()
 	var result: Dictionary = _merge.try_merge(a, b)
@@ -64,10 +62,8 @@ func test_try_merge_produces_tier_two() -> void:
 
 
 func test_try_merge_tier_two_produces_grape() -> void:
-	var a := _pool.acquire(2) as RigidBody2D
-	var b := _pool.acquire(2) as RigidBody2D
-	a.global_position = Vector2(100, 100)
-	b.global_position = Vector2(140, 100)
+	var a := _pool.acquire(2, Vector2(100, 100)) as RigidBody2D
+	var b := _pool.acquire(2, Vector2(140, 100)) as RigidBody2D
 
 	var result: Dictionary = _merge.try_merge(a, b)
 	assert_that(result.get("success")).is_true()
@@ -81,9 +77,9 @@ func test_try_merge_tier_two_produces_grape() -> void:
 
 
 func test_lock_blocks_second_merge() -> void:
-	var a := _pool.acquire(1) as RigidBody2D
-	var b := _pool.acquire(1) as RigidBody2D
-	var c := _pool.acquire(1) as RigidBody2D
+	var a := _pool.acquire(1, Vector2(10, 10)) as RigidBody2D
+	var b := _pool.acquire(1, Vector2(20, 10)) as RigidBody2D
+	var c := _pool.acquire(1, Vector2(30, 10)) as RigidBody2D
 	a.set("is_merging", true)
 
 	assert_that(_merge.can_merge(a, b)).is_false()
@@ -106,10 +102,8 @@ func test_merge_events_payload() -> void:
 	EventBus.subscribe(GameEvents.MERGE_STARTED, on_started)
 	EventBus.subscribe(GameEvents.MERGE_COMPLETED, on_completed)
 
-	var a := _pool.acquire(1) as RigidBody2D
-	var b := _pool.acquire(1) as RigidBody2D
-	a.global_position = Vector2(200, 200)
-	b.global_position = Vector2(220, 200)
+	var a := _pool.acquire(1, Vector2(200, 200)) as RigidBody2D
+	var b := _pool.acquire(1, Vector2(220, 200)) as RigidBody2D
 	var result: Dictionary = _merge.try_merge(a, b)
 
 	assert_that(result.get("success")).is_true()
@@ -134,8 +128,8 @@ func test_merge_events_payload() -> void:
 
 
 func test_pool_balance_after_merge() -> void:
-	var a := _pool.acquire(1) as RigidBody2D
-	var b := _pool.acquire(1) as RigidBody2D
+	var a := _pool.acquire(1, Vector2(10, 10)) as RigidBody2D
+	var b := _pool.acquire(1, Vector2(20, 10)) as RigidBody2D
 	assert_that(_pool.get_active_count()).is_equal(2)
 
 	var result: Dictionary = _merge.try_merge(a, b)
@@ -144,7 +138,6 @@ func test_pool_balance_after_merge() -> void:
 	assert_that(_pool.get_active_count()).is_equal(1)
 	assert_that(_pool.get_available_count()).is_equal(1)
 	assert_that(_pool.get_total_count()).is_equal(2)
-
 	var body: RigidBody2D = result.get("result") as RigidBody2D
 	_pool.release(body)
 	assert_that(_pool.get_active_count()).is_equal(0)

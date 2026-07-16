@@ -15,7 +15,4 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _spawn_tier_one() -> void:
-	var body := _pool.acquire(1) as RigidBody2D
-	if body == null:
-		return
-	body.global_position = SPAWN_POSITION
+	_pool.acquire(1, SPAWN_POSITION)

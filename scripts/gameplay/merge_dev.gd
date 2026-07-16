@@ -20,9 +20,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _spawn_pair() -> void:
-	var a := _pool.acquire(1) as RigidBody2D
-	var b := _pool.acquire(1) as RigidBody2D
+	var a := _pool.acquire(1, SPAWN_A) as RigidBody2D
+	var b := _pool.acquire(1, SPAWN_B) as RigidBody2D
 	if a == null or b == null:
 		return
-	a.global_position = SPAWN_A
-	b.global_position = SPAWN_B

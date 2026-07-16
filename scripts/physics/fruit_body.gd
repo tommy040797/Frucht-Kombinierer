@@ -41,6 +41,11 @@ func configure_from_tier(p_tier: int, p_database: Resource = database) -> void:
 	mass = definition.mass
 	_apply_physics_material(definition.friction)
 	_apply_radius(definition.radius, p_tier)
+	# Stay inactive until activate_at() places the body.
+
+
+func activate_at(world_position: Vector2) -> void:
+	_set_transform_direct(world_position)
 	_set_pooled(false)
 	visible = true
 	sleeping = false
@@ -54,36 +59,61 @@ func reset_for_pool() -> void:
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
 	_set_pooled(true)
-	global_position = POOL_PARK_POSITION
+	_set_transform_direct(POOL_PARK_POSITION)
 	visible = false
 	sleeping = true
 
 
+func _set_transform_direct(world_position: Vector2) -> void:
+	# RigidBody2D can ignore global_position writes while simulated; force physics state.
+	var xform := Transform2D(0.0, world_position)
+	if is_inside_tree():
+		PhysicsServer2D.body_set_state(get_rid(), PhysicsServer2D.BODY_STATE_TRANSFORM, xform)
+	global_position = world_position
+
+
+
 func _set_pooled(pooled: bool) -> void:
 	freeze = pooled
+	contact_monitor = not pooled
 	if pooled:
 		collision_layer = 0
 		collision_mask = 0
 	else:
 		collision_layer = ACTIVE_COLLISION_LAYER
 		collision_mask = ACTIVE_COLLISION_MASK
-	if _collision_shape != null:
-		_collision_shape.disabled = pooled
+	var shape := _collision_shape
+	if shape == null and has_node("CollisionShape2D"):
+		shape = $CollisionShape2D
+	if shape != null:
+		shape.disabled = pooled
+	if _visual == null and has_node("FruitVisual"):
+		_visual = $FruitVisual
+	if _visual != null:
+		_visual.visible = not pooled
 
 
 func _apply_radius(radius: float, p_tier: int) -> void:
+	var shape := _collision_shape
+	if shape == null and has_node("CollisionShape2D"):
+		shape = $CollisionShape2D
+		_collision_shape = shape
 	var circle := CircleShape2D.new()
 	circle.radius = radius
-	_collision_shape.shape = circle
+	shape.shape = circle
 	_apply_visual(radius, p_tier)
 
 
 func _apply_visual(radius: float, p_tier: int) -> void:
-	_visual.color = TIER_COLORS.get(p_tier, Color(0.7, 0.7, 0.7, 1.0))
-	_visual.offset_left = -radius
-	_visual.offset_top = -radius
-	_visual.offset_right = radius
-	_visual.offset_bottom = radius
+	var visual := _visual
+	if visual == null and has_node("FruitVisual"):
+		visual = $FruitVisual
+		_visual = visual
+	visual.color = TIER_COLORS.get(p_tier, Color(0.7, 0.7, 0.7, 1.0))
+	visual.offset_left = -radius
+	visual.offset_top = -radius
+	visual.offset_right = radius
+	visual.offset_bottom = radius
 
 
 func _apply_physics_material(friction: float) -> void:

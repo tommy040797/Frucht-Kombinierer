@@ -40,14 +40,14 @@ func drop() -> RigidBody2D:
 		push_error("DropController: fruit_pool missing")
 		return null
 
-	var body: RigidBody2D = fruit_pool.acquire(DROP_TIER) as RigidBody2D
-	if body == null:
-		return null
-
 	var drop_y := 0.0
 	if container != null and is_instance_valid(container):
 		drop_y = container.global_position.y
-	body.global_position = Vector2(preview_x, drop_y)
+	var spawn_pos := Vector2(preview_x, drop_y)
+
+	var body: RigidBody2D = fruit_pool.acquire(DROP_TIER, spawn_pos) as RigidBody2D
+	if body == null:
+		return null
 
 	EventBus.emit(GameEvents.FRUIT_DROPPED, {
 		"tier": DROP_TIER,
