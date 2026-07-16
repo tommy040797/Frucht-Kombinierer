@@ -1,0 +1,55 @@
+[gd_scene load_steps=11 format=3 uid="uid://bqm10game01"]
+
+[ext_resource type="Script" path="res://scripts/gameplay/game.gd" id="1_game"]
+[ext_resource type="PackedScene" uid="uid://bqm5container01" path="res://scenes/game/container.tscn" id="2_container"]
+[ext_resource type="Script" path="res://scripts/physics/fruit_pool.gd" id="3_pool"]
+[ext_resource type="Script" path="res://scripts/gameplay/score_service.gd" id="4_score"]
+[ext_resource type="Resource" path="res://resources/score_config.tres" id="5_score_cfg"]
+[ext_resource type="Script" path="res://scripts/gameplay/merge_service.gd" id="6_merge"]
+[ext_resource type="Script" path="res://scripts/input/input_handler.gd" id="7_input"]
+[ext_resource type="Script" path="res://scripts/presentation/drop_preview.gd" id="8_preview"]
+[ext_resource type="Script" path="res://scripts/gameplay/drop_controller.gd" id="9_drop"]
+[ext_resource type="Script" path="res://scripts/presentation/debug_overlay.gd" id="10_debug"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_game")
+
+[node name="Container" parent="." instance=ExtResource("2_container")]
+
+[node name="FruitPool" type="Node" parent="."]
+script = ExtResource("3_pool")
+
+[node name="ScoreService" type="Node" parent="."]
+script = ExtResource("4_score")
+score_config = ExtResource("5_score_cfg")
+
+[node name="MergeService" type="Node" parent="."]
+script = ExtResource("6_merge")
+fruit_pool = NodePath("../FruitPool")
+score_service = NodePath("../ScoreService")
+
+[node name="InputHandler" type="Node" parent="."]
+script = ExtResource("7_input")
+
+[node name="DropPreview" type="Node2D" parent="."]
+script = ExtResource("8_preview")
+container = NodePath("../Container")
+
+[node name="DropController" type="Node" parent="."]
+script = ExtResource("9_drop")
+fruit_pool = NodePath("../FruitPool")
+container = NodePath("../Container")
+input_handler = NodePath("../InputHandler")
+drop_preview = NodePath("../DropPreview")
+
+[node name="DebugOverlay" type="CanvasLayer" parent="."]
+script = ExtResource("10_debug")
+score_service = NodePath("../ScoreService")
+
+[node name="ScoreLabel" type="Label" parent="DebugOverlay"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 400.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 28
+text = "Score: 0"
