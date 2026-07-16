@@ -4,6 +4,7 @@ extends Node
 ## Spawns the current drop fruit from FruitPool at the preview X.
 
 const DROP_TIER := 1
+const MERGE_COOLDOWN_SEC := 0.4
 
 @export var fruit_pool: Node
 @export var container: Node2D
@@ -13,6 +14,14 @@ const DROP_TIER := 1
 var can_drop: bool = true
 var preview_x: float = 0.0
 var cooldown_remaining: float = 0.0
+
+
+func _ready() -> void:
+	EventBus.subscribe(GameEvents.MERGE_COMPLETED, _on_merge_completed)
+
+
+func _exit_tree() -> void:
+	EventBus.unsubscribe(GameEvents.MERGE_COMPLETED, _on_merge_completed)
 
 
 func _process(delta: float) -> void:
@@ -51,6 +60,10 @@ func start_cooldown(duration: float) -> void:
 	cooldown_remaining = maxf(0.0, duration)
 	if cooldown_remaining > 0.0:
 		can_drop = false
+
+
+func _on_merge_completed(_data: Variant) -> void:
+	start_cooldown(MERGE_COOLDOWN_SEC)
 
 
 func _sync_from_input() -> void:
