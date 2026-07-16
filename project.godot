@@ -23,7 +23,7 @@ GameStateMachine="*res://scripts/core/game_state_machine.gd"
 
 config/name="Frucht Kombinierer"
 config/description="Casual Physics Merge-Spiel für Android"
-run/main_scene="res://scenes/boot/boot.tscn"
+run/main_scene="res://scenes/game/game.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
