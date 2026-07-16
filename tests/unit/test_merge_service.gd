@@ -3,9 +3,12 @@ extends GdUnitTestSuite
 
 const FRUIT_POOL_SCRIPT := preload("res://scripts/physics/fruit_pool.gd")
 const MERGE_SERVICE_SCRIPT := preload("res://scripts/gameplay/merge_service.gd")
+const SCORE_SERVICE_SCRIPT := preload("res://scripts/gameplay/score_service.gd")
+const SCORE_CONFIG := preload("res://resources/score_config.tres")
 
 var _pool: Node
 var _merge: Node
+var _score: Node
 
 
 func before_test() -> void:
@@ -13,8 +16,14 @@ func before_test() -> void:
 	add_child(_pool)
 	auto_free(_pool)
 
+	_score = SCORE_SERVICE_SCRIPT.new()
+	_score.score_config = SCORE_CONFIG
+	add_child(_score)
+	auto_free(_score)
+
 	_merge = MERGE_SERVICE_SCRIPT.new()
 	_merge.fruit_pool = _pool
+	_merge.score_service = _score
 	add_child(_merge)
 	auto_free(_merge)
 
@@ -95,8 +104,9 @@ func test_merge_events_payload() -> void:
 	assert_that(completed.data).is_not_null()
 	assert_that(completed.data.get("result_tier")).is_equal(2)
 	assert_that(completed.data.get("position")).is_equal(Vector2(210, 200))
-	assert_that(completed.data.get("score")).is_equal(0)
+	assert_that(completed.data.get("score")).is_equal(10)
 	assert_that(completed.data.get("combo_multiplier")).is_equal(1.0)
+	assert_that(_score.current_score).is_equal(10)
 
 	EventBus.unsubscribe(GameEvents.MERGE_STARTED, on_started)
 	EventBus.unsubscribe(GameEvents.MERGE_COMPLETED, on_completed)
