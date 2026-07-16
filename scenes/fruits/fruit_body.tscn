@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bqm6fruitbody01"]
+[gd_scene load_steps=4 format=3 uid="uid://bqm6fruitbody01"]
 
 [ext_resource type="Script" path="res://scripts/physics/fruit_body.gd" id="1_fruit_body"]
+[ext_resource type="Script" path="res://scripts/physics/fruit_collision_handler.gd" id="2_collision_handler"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_default"]
 radius = 18.0
@@ -23,5 +24,8 @@ offset_top = -18.0
 offset_right = 18.0
 offset_bottom = 18.0
 color = Color(0.9, 0.2, 0.2, 1)
+
+[node name="FruitCollisionHandler" type="Node" parent="."]
+script = ExtResource("2_collision_handler")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
