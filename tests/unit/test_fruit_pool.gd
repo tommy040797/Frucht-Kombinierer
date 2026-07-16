@@ -34,3 +34,23 @@ func test_release_does_not_free() -> void:
 	var body := _pool.acquire(1) as RigidBody2D
 	_pool.release(body)
 	assert_that(is_instance_valid(body)).is_true()
+
+
+func test_release_disables_physics_and_parks() -> void:
+	var body := _pool.acquire(1) as RigidBody2D
+	body.global_position = Vector2(300, 500)
+	_pool.release(body)
+
+	assert_that(body.freeze).is_true()
+	assert_that(body.collision_layer).is_equal(0)
+	assert_that(body.collision_mask).is_equal(0)
+	assert_that(body.visible).is_false()
+	assert_that(body.get_node("CollisionShape2D").disabled).is_true()
+	assert_float(body.global_position.x).is_less(-1000.0)
+
+	var reused := _pool.acquire(1) as RigidBody2D
+	assert_that(reused).is_same(body)
+	assert_that(reused.freeze).is_false()
+	assert_that(reused.collision_layer).is_equal(2)
+	assert_that(reused.get_node("CollisionShape2D").disabled).is_false()
+	_pool.release(reused)

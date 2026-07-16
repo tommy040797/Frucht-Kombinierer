@@ -2,6 +2,9 @@ class_name FruitBody
 extends RigidBody2D
 
 const DEFAULT_DATABASE := preload("res://resources/fruit_database.tres")
+const ACTIVE_COLLISION_LAYER := 2
+const ACTIVE_COLLISION_MASK := 3
+const POOL_PARK_POSITION := Vector2(-10000, -10000)
 
 const TIER_COLORS := {
 	1: Color(0.9, 0.2, 0.2, 1.0),
@@ -29,6 +32,7 @@ func configure_from_tier(p_tier: int, p_database: Resource = database) -> void:
 	mass = definition.mass
 	_apply_physics_material(definition.friction)
 	_apply_radius(definition.radius, p_tier)
+	_set_pooled(false)
 	visible = true
 	sleeping = false
 
@@ -40,8 +44,22 @@ func reset_for_pool() -> void:
 	is_merging = false
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
-	sleeping = true
+	_set_pooled(true)
+	global_position = POOL_PARK_POSITION
 	visible = false
+	sleeping = true
+
+
+func _set_pooled(pooled: bool) -> void:
+	freeze = pooled
+	if pooled:
+		collision_layer = 0
+		collision_mask = 0
+	else:
+		collision_layer = ACTIVE_COLLISION_LAYER
+		collision_mask = ACTIVE_COLLISION_MASK
+	if _collision_shape != null:
+		_collision_shape.disabled = pooled
 
 
 func _apply_radius(radius: float, p_tier: int) -> void:

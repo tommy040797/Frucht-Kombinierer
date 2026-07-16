@@ -34,12 +34,13 @@ func _on_body_entered(other: Node) -> void:
 		return
 
 	# Pair key by instance_id order so A→B and B→A share one identity.
+	# Defer out of the physics flush so release/freeze is safe.
 	var id_a := _body.get_instance_id()
 	var id_b := other.get_instance_id()
 	if id_a > id_b:
-		service.try_merge(other as RigidBody2D, _body)
+		service.call_deferred("try_merge", other as RigidBody2D, _body)
 	else:
-		service.try_merge(_body, other as RigidBody2D)
+		service.call_deferred("try_merge", _body, other as RigidBody2D)
 
 
 func _resolve_merge_service() -> Node:
