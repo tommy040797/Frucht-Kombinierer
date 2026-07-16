@@ -95,8 +95,10 @@ func _execute_merge(a: RigidBody2D, b: RigidBody2D) -> void:
 	pool.release(b)
 
 	var result: RigidBody2D = pool.acquire(result_tier) as RigidBody2D
-	if result == null:
+	if result == null or int(result.get("tier")) != result_tier:
 		push_error("MergeService: failed to acquire result tier %d" % result_tier)
+		if result != null:
+			pool.release(result)
 		_last_result = {"success": false, "result": null, "result_tier": 0}
 		return
 

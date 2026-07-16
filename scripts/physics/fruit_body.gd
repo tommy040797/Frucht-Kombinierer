@@ -9,6 +9,15 @@ const POOL_PARK_POSITION := Vector2(-10000, -10000)
 const TIER_COLORS := {
 	1: Color(0.9, 0.2, 0.2, 1.0),
 	2: Color(0.95, 0.35, 0.55, 1.0),
+	3: Color(0.55, 0.25, 0.75, 1.0),
+	4: Color(1.0, 0.55, 0.15, 1.0),
+	5: Color(0.85, 0.15, 0.15, 1.0),
+	6: Color(0.7, 0.85, 0.25, 1.0),
+	7: Color(1.0, 0.65, 0.4, 1.0),
+	8: Color(0.3, 0.75, 0.35, 1.0),
+	9: Color(0.95, 0.85, 0.2, 1.0),
+	10: Color(0.9, 0.45, 0.1, 1.0),
+	11: Color(1.0, 0.84, 0.0, 1.0),
 }
 
 @export var database: Resource = DEFAULT_DATABASE

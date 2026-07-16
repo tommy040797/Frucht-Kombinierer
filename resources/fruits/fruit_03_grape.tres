@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FruitDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/fruit_definition.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+tier = 3
+display_name = "Traube"
+radius = 34.0
+mass = 2.0
+friction = 0.35
+sfx_id = ""
+juice_profile = ""

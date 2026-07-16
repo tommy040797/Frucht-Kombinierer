@@ -11,6 +11,14 @@ func test_fruit_database_preloads_tier_1() -> void:
 	assert_that(DB.get_by_tier(1).tier).is_equal(1)
 
 
+func test_fruit_database_covers_all_eleven_tiers() -> void:
+	assert_that(DB.get_max_tier()).is_equal(11)
+	for tier in range(1, 12):
+		var definition = DB.get_by_tier(tier)
+		assert_that(definition).is_not_null()
+		assert_that(definition.tier).is_equal(tier)
+
+
 func test_spawn_config_weights() -> void:
 	assert_that(SPAWN.get_weight(1)).is_equal(35)
 	assert_that(SPAWN.get_total_weight()).is_equal(100)

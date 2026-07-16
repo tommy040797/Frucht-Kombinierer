@@ -63,6 +63,23 @@ func test_try_merge_produces_tier_two() -> void:
 	_pool.release(body)
 
 
+func test_try_merge_tier_two_produces_grape() -> void:
+	var a := _pool.acquire(2) as RigidBody2D
+	var b := _pool.acquire(2) as RigidBody2D
+	a.global_position = Vector2(100, 100)
+	b.global_position = Vector2(140, 100)
+
+	var result: Dictionary = _merge.try_merge(a, b)
+	assert_that(result.get("success")).is_true()
+	assert_that(result.get("result_tier")).is_equal(3)
+	var body: RigidBody2D = result.get("result") as RigidBody2D
+	assert_that(body).is_not_null()
+	assert_that(body.get("tier")).is_equal(3)
+	assert_that(_score.current_score).is_equal(25)
+
+	_pool.release(body)
+
+
 func test_lock_blocks_second_merge() -> void:
 	var a := _pool.acquire(1) as RigidBody2D
 	var b := _pool.acquire(1) as RigidBody2D
