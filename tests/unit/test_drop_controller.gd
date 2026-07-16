@@ -47,11 +47,19 @@ func test_drop_acquires_tier_one_and_emits() -> void:
 	assert_float(body.global_position.x).is_equal_approx(360.0, 0.01)
 	assert_float(body.global_position.y).is_equal_approx(384.0, 0.01)
 	assert_that(_pool.get_active_count()).is_equal(1)
+	assert_that(_controller.can_drop).is_false()
 
 	assert_that(_received.size()).is_equal(1)
 	var payload: Dictionary = _received[0] as Dictionary
 	assert_that(payload["tier"]).is_equal(1)
 	assert_that(payload["position"]).is_equal(body.global_position)
+
+
+func test_drop_cooldown_blocks_immediate_second_drop() -> void:
+	_controller.set_preview_x(200.0)
+	assert_that(_controller.drop()).is_not_null()
+	assert_that(_controller.drop()).is_null()
+	assert_that(_pool.get_active_count()).is_equal(1)
 
 
 func test_can_drop_false_skips_spawn() -> void:

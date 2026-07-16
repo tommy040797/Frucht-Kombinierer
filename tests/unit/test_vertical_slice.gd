@@ -52,6 +52,8 @@ func test_twenty_drops_and_merge_increase_score() -> void:
 	# 20 drops across the basket (milestone playtest script).
 	var dropped: Array = []
 	for i in 20:
+		_drop.can_drop = true
+		_drop.cooldown_remaining = 0.0
 		var x := 120.0 + float(i % 10) * 40.0
 		_drop.set_preview_x(x)
 		var body: RigidBody2D = _drop.drop() as RigidBody2D
@@ -78,9 +80,12 @@ func test_twenty_drops_and_merge_increase_score() -> void:
 func test_merge_starts_drop_cooldown() -> void:
 	_drop.set_preview_x(300.0)
 	var a: RigidBody2D = _drop.drop() as RigidBody2D
+	assert_that(a).is_not_null()
+
+	_drop.can_drop = true
+	_drop.cooldown_remaining = 0.0
 	_drop.set_preview_x(340.0)
 	var b: RigidBody2D = _drop.drop() as RigidBody2D
-	assert_that(a).is_not_null()
 	assert_that(b).is_not_null()
 
 	_merge.try_merge(a, b)

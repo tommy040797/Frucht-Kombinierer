@@ -4,7 +4,9 @@ extends Node
 ## Spawns the current drop fruit from FruitPool at the preview X.
 
 const DROP_TIER := 1
-const MERGE_COOLDOWN_SEC := 0.4
+const DROP_COOLDOWN_SEC := 0.55
+const MERGE_COOLDOWN_SEC := 0.45
+
 
 @export var fruit_pool: Node
 @export var container: Node2D
@@ -48,6 +50,8 @@ func drop() -> RigidBody2D:
 	var body: RigidBody2D = fruit_pool.acquire(DROP_TIER, spawn_pos) as RigidBody2D
 	if body == null:
 		return null
+
+	start_cooldown(DROP_COOLDOWN_SEC)
 
 	EventBus.emit(GameEvents.FRUIT_DROPPED, {
 		"tier": DROP_TIER,
