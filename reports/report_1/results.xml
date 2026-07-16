@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites id="2026-07-14" name="report_1" tests="5" failures="0" skipped="0" flaky="0" time="0.000">
-	<testsuite id="0" name="test_dummy" package="tests/unit" timestamp="2026-07-14T13:31:44" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="0.007">
-		<testcase name="test_dummy_passes" classname="test_dummy" time="0.002">
+<testsuites id="2026-07-14" name="report_1" tests="12" failures="0" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_container" package="tests/unit" timestamp="2026-07-14T16:05:30" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="5.572">
+		<testcase name="test_container_scene_loads" classname="test_container" time="0.306">
+		</testcase>
+		<testcase name="test_danger_line_at_eighty_five_percent_height" classname="test_container" time="0.406">
 		</testcase>
 	</testsuite>
-	<testsuite id="1" name="test_resources" package="tests/unit" timestamp="2026-07-14T13:31:44" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.019">
-		<testcase name="test_fruit_database_preloads_tier_1" classname="test_resources" time="0.002">
+	<testsuite id="1" name="test_dummy" package="tests/unit" timestamp="2026-07-14T16:05:40" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="1.366">
+		<testcase name="test_dummy_passes" classname="test_dummy" time="0.611">
 		</testcase>
-		<testcase name="test_spawn_config_weights" classname="test_resources" time="0.001">
+	</testsuite>
+	<testsuite id="2" name="test_game_state_machine" package="tests/unit" timestamp="2026-07-14T16:05:42" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="1.916">
+		<testcase name="test_playing_to_paused_is_allowed" classname="test_game_state_machine" time="0.779">
 		</testcase>
-		<testcase name="test_score_config_merge_points" classname="test_resources" time="0.002">
+		<testcase name="test_boot_to_game_over_is_rejected" classname="test_game_state_machine" time="0.024">
 		</testcase>
-		<testcase name="test_physics_config_defaults" classname="test_resources" time="0.003">
+		<testcase name="test_splash_to_playing_is_rejected" classname="test_game_state_machine" time="0.021">
+		</testcase>
+		<testcase name="test_physics_toggle_playing_paused" classname="test_game_state_machine" time="0.022">
+		</testcase>
+		<testcase name="test_game_state_changed_event" classname="test_game_state_machine" time="0.024">
+		</testcase>
+	</testsuite>
+	<testsuite id="3" name="test_resources" package="tests/unit" timestamp="2026-07-14T16:05:44" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.303">
+		<testcase name="test_fruit_database_preloads_tier_1" classname="test_resources" time="0.031">
+		</testcase>
+		<testcase name="test_spawn_config_weights" classname="test_resources" time="0.032">
+		</testcase>
+		<testcase name="test_score_config_merge_points" classname="test_resources" time="0.030">
+		</testcase>
+		<testcase name="test_physics_config_defaults" classname="test_resources" time="0.033">
 		</testcase>
 	</testsuite>
 </testsuites>

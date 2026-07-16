@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites id="2026-07-14" name="report_7" tests="2" failures="0" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_container" package="tests/unit" timestamp="2026-07-14T14:19:38" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.012">
+		<testcase name="test_container_scene_loads" classname="test_container" time="0.002">
+		</testcase>
+		<testcase name="test_danger_line_at_eighty_five_percent_height" classname="test_container" time="0.002">
+		</testcase>
+	</testsuite>
+</testsuites>

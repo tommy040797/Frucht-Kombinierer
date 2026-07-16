@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites id="2026-07-14" name="report_13" tests="3" failures="0" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_fruit_pool" package="tests/unit" timestamp="2026-07-14T18:17:30" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="0.020">
+		<testcase name="test_acquire_tier_one_fruit" classname="test_fruit_pool" time="0.006">
+		</testcase>
+		<testcase name="test_pool_acquire_release_stable" classname="test_fruit_pool" time="0.003">
+		</testcase>
+		<testcase name="test_release_does_not_free" classname="test_fruit_pool" time="0.005">
+		</testcase>
+	</testsuite>
+</testsuites>
