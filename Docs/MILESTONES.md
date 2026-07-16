@@ -6,7 +6,7 @@
 | **Basis** | [PRD](./PRD.md) · [TDD](./TDD.md) · [SETUP](./SETUP.md) |
 | **Scope** | MVP (Godot 4, Android) |
 | **Größe** | Max. **1 Arbeitstag** (~6–8 h) pro Milestone |
-| **Stand** | 14. Juli 2026 — M01–M06, M16 erledigt |
+| **Stand** | 16. Juli 2026 — M01–M07, M16 erledigt |
 
 ---
 
@@ -15,12 +15,12 @@
 | Phase | Milestones | Arbeitstage | Fortschritt |
 |-------|------------|-------------|-------------|
 | 0 — Foundation | M01–M05 | 5 | M01–M05 ✅ |
-| 1 — Vertical Slice | M06–M12 | 7 | M06 ✅ |
+| 1 — Vertical Slice | M06–M12 | 7 | M06–M07 ✅ |
 | 2 — Core Gameplay | M13–M18 | 6 | M16 ✅ |
 | 3 — Game Flow & UI | M19–M25 | 7 | — |
 | 4 — Meta & Polish | M26–M32 | 7 | — |
 | 5 — Ship MVP | M33–M36 | 4 | — |
-| **Gesamt** | **36 Milestones** | **~36 Tage** | **7/36** |
+| **Gesamt** | **36 Milestones** | **~36 Tage** | **8/36** |
 
 ```mermaid
 gantt
@@ -242,16 +242,26 @@ gantt
 
 ---
 
-### M07 — Input & Drop-Preview
+### M07 — Input & Drop-Preview ✅
 
 | | |
 |---|---|
+| **Status** | ✅ Abgeschlossen (16.07.2026) |
 | **Ziel** | Touch-Drag horizontal, Ghost-Silhouette, Drop bei Release |
 | **Abhängigkeiten** | M05, M06 |
 | **Akzeptanzkriterien** | Finger-Drag bewegt Preview entlang Container-Oberkante; Ghost zeigt Landeposition; Release spawnt Frucht |
-| **Risiken** | Koordinaten Screen↔World falsch → `Camera2D` + `get_global_mouse_position()` |
-| **Tests** | Manuell: 10 Drops an links/rechts/mitte landen korrekt |
+| **Risiken** | Koordinaten Screen↔World falsch → Viewport-Koordinaten + Clamp an innere Wände |
+| **Tests** | Unit: Clamp/Mapping; `drop()` acquire + `FRUIT_DROPPED`; `can_drop=false` blockiert |
 | **DoD** | `InputHandler`, `DropPreview`, `DropController` committed |
+
+**Checkliste**
+
+- [x] `scripts/input/input_handler.gd` — `InputHandler` Touch + Mouse; `pointer_position`, `is_dragging`, `was_released` (edge-triggered)
+- [x] `scripts/presentation/drop_preview.gd` — `DropPreview` Ghost (`ColorRect`); `map_screen_to_drop_x()`, `show_ghost()`, `hide_ghost()`; Clamp 20–592 ± radius 18
+- [x] `scripts/gameplay/drop_controller.gd` — `DropController` `can_drop`, `set_preview_x()`, `drop()`, Cooldown-Stub; `FruitPool.acquire(1)` + `FRUIT_DROPPED`
+- [x] `scenes/game/drop_dev.tscn` — Container + FruitPool + InputHandler + DropPreview + DropController
+- [x] `tests/unit/test_drop_preview.gd` + `test_drop_controller.gd`
+- [x] GdUnit Headless-Tests → Exit 0
 
 ---
 
