@@ -6,7 +6,7 @@
 | **Basis** | [PRD](./PRD.md) · [TDD](./TDD.md) · [SETUP](./SETUP.md) |
 | **Scope** | MVP (Godot 4, Android) |
 | **Größe** | Max. **1 Arbeitstag** (~6–8 h) pro Milestone |
-| **Stand** | 16. Juli 2026 — M01–M08, M16 erledigt |
+| **Stand** | 16. Juli 2026 — M01–M09, M16 erledigt |
 
 ---
 
@@ -15,12 +15,12 @@
 | Phase | Milestones | Arbeitstage | Fortschritt |
 |-------|------------|-------------|-------------|
 | 0 — Foundation | M01–M05 | 5 | M01–M05 ✅ |
-| 1 — Vertical Slice | M06–M12 | 7 | M06 ✅ · M07 ✅ · M08 ✅ |
+| 1 — Vertical Slice | M06–M12 | 7 | M06 ✅ · M07 ✅ · M08 ✅ · M09 ✅ |
 | 2 — Core Gameplay | M13–M18 | 6 | M16 ✅ |
 | 3 — Game Flow & UI | M19–M25 | 7 | — |
 | 4 — Meta & Polish | M26–M32 | 7 | — |
 | 5 — Ship MVP | M33–M36 | 4 | — |
-| **Gesamt** | **36 Milestones** | **~36 Tage** | **9/36** |
+| **Gesamt** | **36 Milestones** | **~36 Tage** | **10/36** |
 
 ```mermaid
 gantt
@@ -290,16 +290,27 @@ gantt
 
 ---
 
-### M09 — ScoreService (Basis)
+### M09 — ScoreService (Basis) ✅
 
 | | |
 |---|---|
+| **Status** | ✅ Abgeschlossen (16.07.2026) |
 | **Ziel** | Punkte bei Merge gemäß `ScoreConfig`; Floating-Score-Daten im Event |
 | **Abhängigkeiten** | M03, M08 |
 | **Akzeptanzkriterien** | Merge 1→2 = 10 Punkte (PRD §8.1); `current_score` steigt; Event enthält Score + Position |
 | **Risiken** | Falsche Tier→Score-Zuordnung → Unit-Test pro Tier |
-| **Tests** | Unit: `add_merge_score(1)` → +10; `add_merge_score(5)` → +100 |
+| **Tests** | Unit: `add_merge_score(1)` → +10; `add_merge_score(4)` → +100 |
 | **DoD** | `ScoreService` committed; an MergeService angebunden |
+
+**Checkliste**
+
+- [x] `scripts/gameplay/score_service.gd` — `ScoreService` mit `add_merge_score` / `reset` / `current_score`
+- [x] `ScoreConfig` Lookup für Source-Tiers 1–10 (PRD §8.1)
+- [x] `MergeService` verdrahtet — `MERGE_COMPLETED` enthält Score + Position
+- [x] `scenes/game/merge_dev.tscn` — ScoreService-Node
+- [x] `tests/unit/test_score_service.gd` — Tier 1/4, alle Tiers, reset, invalid
+- [x] Merge-Event-Test erwartet Score 10 für 1→2
+- [x] GdUnit Headless-Tests → Exit 0
 
 ---
 
