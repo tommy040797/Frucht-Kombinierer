@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://bqm7dropdev01"]
+
+[ext_resource type="PackedScene" uid="uid://bqm5container01" path="res://scenes/game/container.tscn" id="1_container"]
+[ext_resource type="Script" path="res://scripts/physics/fruit_pool.gd" id="2_pool"]
+[ext_resource type="Script" path="res://scripts/input/input_handler.gd" id="3_input"]
+[ext_resource type="Script" path="res://scripts/presentation/drop_preview.gd" id="4_preview"]
+[ext_resource type="Script" path="res://scripts/gameplay/drop_controller.gd" id="5_drop"]
+
+[node name="DropDev" type="Node2D"]
+
+[node name="Container" parent="." instance=ExtResource("1_container")]
+
+[node name="FruitPool" type="Node" parent="."]
+script = ExtResource("2_pool")
+
+[node name="InputHandler" type="Node" parent="."]
+script = ExtResource("3_input")
+
+[node name="DropPreview" type="Node2D" parent="."]
+script = ExtResource("4_preview")
+container = NodePath("../Container")
+
+[node name="DropController" type="Node" parent="."]
+script = ExtResource("5_drop")
+fruit_pool = NodePath("../FruitPool")
+container = NodePath("../Container")
+input_handler = NodePath("../InputHandler")
+drop_preview = NodePath("../DropPreview")
