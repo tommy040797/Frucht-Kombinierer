@@ -6,6 +6,7 @@ const RESULT_UPWARD_IMPULSE := Vector2(0, -80)
 const MAX_RESULT_TIER := 11
 
 @export var fruit_pool: Node
+@export var score_service: Node
 
 var _merge_queue: Array = []
 var _processing_queue: bool = false
@@ -102,11 +103,20 @@ func _execute_merge(a: RigidBody2D, b: RigidBody2D) -> void:
 	result.global_position = contact_point
 	result.apply_central_impulse(RESULT_UPWARD_IMPULSE)
 
+	var awarded := 0
+	var combo := 1.0
+	var scorer := _resolve_score_service()
+	if scorer != null and scorer.has_method("add_merge_score"):
+		awarded = int(scorer.add_merge_score(source_tier, contact_point))
+		combo = float(scorer.get("combo_multiplier"))
+	else:
+		push_warning("MergeService: ScoreService missing — merge score stubbed to 0")
+
 	EventBus.emit(GameEvents.MERGE_COMPLETED, {
 		"result_tier": result_tier,
 		"position": contact_point,
-		"score": 0,
-		"combo_multiplier": 1.0,
+		"score": awarded,
+		"combo_multiplier": combo,
 	})
 
 	_last_result = {
@@ -114,6 +124,7 @@ func _execute_merge(a: RigidBody2D, b: RigidBody2D) -> void:
 		"result": result,
 		"result_tier": result_tier,
 		"contact_point": contact_point,
+		"score": awarded,
 	}
 
 
@@ -124,3 +135,12 @@ func _resolve_pool() -> Node:
 	if parent_pool != null and parent_pool.has_method("acquire") and parent_pool.has_method("release"):
 		return parent_pool
 	return null
+
+
+func _resolve_score_service() -> Node:
+	if score_service != null and is_instance_valid(score_service):
+		return score_service
+	var tree := get_tree()
+	if tree == null:
+		return null
+	return tree.get_first_node_in_group("score_service")

@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bqm8mergedev01"]
+[gd_scene load_steps=7 format=3 uid="uid://bqm8mergedev01"]
 
 [ext_resource type="PackedScene" uid="uid://bqm5container01" path="res://scenes/game/container.tscn" id="1_container"]
 [ext_resource type="Script" path="res://scripts/physics/fruit_pool.gd" id="2_pool"]
 [ext_resource type="Script" path="res://scripts/gameplay/merge_service.gd" id="3_merge"]
 [ext_resource type="Script" path="res://scripts/gameplay/merge_dev.gd" id="4_dev"]
+[ext_resource type="Script" path="res://scripts/gameplay/score_service.gd" id="5_score"]
+[ext_resource type="Resource" path="res://resources/score_config.tres" id="6_score_cfg"]
 
 [node name="MergeDev" type="Node2D"]
 script = ExtResource("4_dev")
@@ -13,5 +15,11 @@ script = ExtResource("4_dev")
 [node name="FruitPool" type="Node" parent="."]
 script = ExtResource("2_pool")
 
+[node name="ScoreService" type="Node" parent="."]
+script = ExtResource("5_score")
+score_config = ExtResource("6_score_cfg")
+
 [node name="MergeService" type="Node" parent="."]
 script = ExtResource("3_merge")
+fruit_pool = NodePath("../FruitPool")
+score_service = NodePath("../ScoreService")
