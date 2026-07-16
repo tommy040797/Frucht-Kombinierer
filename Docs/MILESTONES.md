@@ -1,4 +1,4 @@
-# Milestone-Plan — Frucht Kombinierer
+﻿# Milestone-Plan — Frucht Kombinierer
 
 | | |
 |---|---|
@@ -6,7 +6,7 @@
 | **Basis** | [PRD](./PRD.md) · [TDD](./TDD.md) · [SETUP](./SETUP.md) |
 | **Scope** | MVP (Godot 4, Android) |
 | **Größe** | Max. **1 Arbeitstag** (~6–8 h) pro Milestone |
-| **Stand** | 16. Juli 2026 — M01–M07, M16 erledigt |
+| **Stand** | 16. Juli 2026 — M01–M08, M16 erledigt |
 
 ---
 
@@ -15,12 +15,12 @@
 | Phase | Milestones | Arbeitstage | Fortschritt |
 |-------|------------|-------------|-------------|
 | 0 — Foundation | M01–M05 | 5 | M01–M05 ✅ |
-| 1 — Vertical Slice | M06–M12 | 7 | M06–M07 ✅ |
+| 1 — Vertical Slice | M06–M12 | 7 | M06 ✅ · M07 ✅ · M08 ✅ |
 | 2 — Core Gameplay | M13–M18 | 6 | M16 ✅ |
 | 3 — Game Flow & UI | M19–M25 | 7 | — |
 | 4 — Meta & Polish | M26–M32 | 7 | — |
 | 5 — Ship MVP | M33–M36 | 4 | — |
-| **Gesamt** | **36 Milestones** | **~36 Tage** | **8/36** |
+| **Gesamt** | **36 Milestones** | **~36 Tage** | **9/36** |
 
 ```mermaid
 gantt
@@ -265,16 +265,28 @@ gantt
 
 ---
 
-### M08 — MergeService (Tier 1→2)
+### M08 — MergeService (Tier 1→2) ✅
 
 | | |
 |---|---|
+| **Status** | ✅ Abgeschlossen (16.07.2026) |
 | **Ziel** | Zwei gleiche Früchte kollidieren → eine Frucht Tier+1 am Kontaktpunkt |
 | **Abhängigkeiten** | M06 |
 | **Akzeptanzkriterien** | Kirsche + Kirsche → Erdbeere; `is_merging`-Lock verhindert Doppel-Merge; `merge_started/completed` Events |
 | **Risiken** | Race bei schneller Kollision → Lock + Queue (TDD §15) |
 | **Tests** | Unit: `can_merge(same,same)=true`, `can_merge(diff)=false`; `try_merge` erzeugt tier+1 |
 | **DoD** | `MergeService` + `FruitCollisionHandler` committed |
+
+**Checkliste**
+
+- [x] `scripts/gameplay/merge_service.gd` — `can_merge`, `try_merge`, `_merge_queue` (max 10/Tick), `process_chain_merges()`
+- [x] `is_merging`-Lock vor Queue; Release nur über `FruitPool`; Result am Kontakt-Mittelpunkt
+- [x] EventBus `MERGE_STARTED` / `MERGE_COMPLETED` (Score-Stub `0`, Combo `1.0`)
+- [x] `scripts/physics/fruit_collision_handler.gd` — `body_entered` → `try_merge` (Group `merge_service`)
+- [x] `scenes/fruits/fruit_body.tscn` — `FruitCollisionHandler`-Kind (M07-Pool-kompatibel)
+- [x] `scenes/game/merge_dev.tscn` — Container + Pool + MergeService; Spawn zweier Tier-1-Früchte
+- [x] `tests/unit/test_merge_service.gd` — same/diff, try_merge→tier 2, Lock, Events, Pool-Balance
+- [x] GdUnit Headless-Tests (`test_merge_service.gd`) → Exit 0 (6/6 PASSED)
 
 ---
 
