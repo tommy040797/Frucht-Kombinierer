@@ -6,7 +6,7 @@
 | **Basis** | [PRD](./PRD.md) · [TDD](./TDD.md) · [SETUP](./SETUP.md) |
 | **Scope** | MVP (Godot 4, Android) |
 | **Größe** | Max. **1 Arbeitstag** (~6–8 h) pro Milestone |
-| **Stand** | 16. Juli 2026 — M01–M09, M16 erledigt |
+| **Stand** | 16. Juli 2026 — M01–M10, M16 erledigt |
 
 ---
 
@@ -15,12 +15,12 @@
 | Phase | Milestones | Arbeitstage | Fortschritt |
 |-------|------------|-------------|-------------|
 | 0 — Foundation | M01–M05 | 5 | M01–M05 ✅ |
-| 1 — Vertical Slice | M06–M12 | 7 | M06 ✅ · M07 ✅ · M08 ✅ · M09 ✅ |
+| 1 — Vertical Slice | M06–M12 | 7 | M06–M10 ✅ |
 | 2 — Core Gameplay | M13–M18 | 6 | M16 ✅ |
 | 3 — Game Flow & UI | M19–M25 | 7 | — |
 | 4 — Meta & Polish | M26–M32 | 7 | — |
 | 5 — Ship MVP | M33–M36 | 4 | — |
-| **Gesamt** | **36 Milestones** | **~36 Tage** | **10/36** |
+| **Gesamt** | **36 Milestones** | **~36 Tage** | **11/36** |
 
 ```mermaid
 gantt
@@ -314,16 +314,27 @@ gantt
 
 ---
 
-### M10 — Vertical Slice Integration
+### M10 — Vertical Slice Integration ✅
 
 | | |
 |---|---|
+| **Status** | ✅ Abgeschlossen (16.07.2026) |
 | **Ziel** | Spielbarer Kernloop: Drop → Physik → Merge 1→2 → Score — eine Scene |
 | **Abhängigkeiten** | M07, M08, M09 |
 | **Akzeptanzkriterien** | 5 Min. spielbar ohne Crash; Drop, Kollision, Merge, Score funktionieren end-to-end |
 | **Risiken** | Integration-Bugs → Debug-Overlay mit Tier/Score |
 | **Tests** | Playtest-Script: 20 Drops, mind. 1 Merge, Score > 0 |
 | **DoD** | `game.tscn` spielbar; Demo-Video oder Screenshot im PR |
+
+**Checkliste**
+
+- [x] `scenes/game/game.tscn` — Container + Pool + Score + Merge + Drop + Debug-Overlay
+- [x] `scripts/gameplay/game.gd` — Service-Wiring; R = Scene-Reload
+- [x] `scripts/presentation/debug_overlay.gd` — Score-Label
+- [x] DropController Merge-Cooldown 0.4 s
+- [x] `project.godot` Main Scene → `game.tscn`
+- [x] `tests/unit/test_vertical_slice.gd` — 20 Drops, Merge, Score > 0
+- [x] Full Unit-Suite → Exit 0 (34 Tests)
 
 ---
 
